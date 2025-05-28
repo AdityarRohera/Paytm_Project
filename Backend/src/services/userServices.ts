@@ -1,3 +1,5 @@
+import mongoose , {Schema , Types} from "mongoose";
+import { accountModel } from "../Models/accountModel";
 import { userModel } from "../Models/userModel"
 import bcrypt from 'bcrypt'
 const saltRound = 10
@@ -35,4 +37,10 @@ export const findUsers = async(name : string) => {
 
     let users = await userModel.find({$or: [ { firstName: name}, { lastName : name } ]});
     return users
+}
+
+export const createBalance = async(userId : Types.ObjectId) => {
+    const balance = 1 + (Math.random() * 10000);
+    const createBal = await accountModel.create({userId , balance});
+    return createBal;
 }

@@ -1,5 +1,5 @@
 import { Request , Response } from "express";
-import { createUser , findUser , findUsers } from "../services/userServices";
+import { createUser , findUser , findUsers , createBalance } from "../services/userServices";
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { AuthenticatedRequest } from "../userAuth";
@@ -23,7 +23,11 @@ export const userSignup = async(req: Request , res : Response) => {
     
         // create new user
         const newUser = await createUser({firstName ,lastName , email , password});
+
         if (newUser){
+            // now create random balance for user
+            await createBalance(newUser._id);
+
             res.status(200).send({
                 status : "success",
                 message : "user created"
