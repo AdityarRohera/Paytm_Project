@@ -14,7 +14,9 @@ app.use(express.json());
 
 // Routes
 import userRouter from './routes/userRoute';
+import accountRouter from './routes/accountRoute';
 app.use('/api/v1/user' , userRouter);
+app.use('/api/v1/account' , accountRouter )
 
 app.listen(port, () => {
   console.log(`App listening on port ${port}`)
