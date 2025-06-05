@@ -1,9 +1,10 @@
 import { Request , Response } from "express";
-import { createUser , findUser , findUsers , createBalance } from "../services/userServices";
+import { createUser , findUser , findUsers , createBalance , getAllUsers } from "../services/userServices";
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { AuthenticatedRequest } from "../userAuth";
 import { userModel } from "../Models/userModel";
+import mongoose , {Schema} from "mongoose";
 const secret = process.env.JWT_SECRET;
 
 export const userSignup = async(req: Request , res : Response) => {
@@ -153,6 +154,41 @@ export const filterUser = async(req: Request , res: Response) => {
         res.status(200).send({
             status : "success",
             users : users
+        })
+
+    }catch(err : unknown){
+         let errMessage;
+        if(err instanceof Error){
+            errMessage = err.message
+        } else{
+            errMessage = err
+        }
+
+        res.send({
+            status : " fail",
+            message : errMessage
+        })
+    }
+}
+
+export const allUsers = async(req: Request , res: Response) => {
+    try{
+         const userReq = req as AuthenticatedRequest;
+         const userId = new mongoose.Types.ObjectId(userReq.userId);
+
+         // get all users
+         const allUsers = await getAllUsers();
+         console.log(allUsers);
+
+        //  now filter it 
+        const newAllUsers = allUsers.filter(user => {
+            console.log(user._id , "and user is" , userId);
+            return user._id.toString() !== userId.toString();
+        });
+        
+        res.status(200).send({
+            status : "true",
+            users : newAllUsers
         })
 
     }catch(err : unknown){

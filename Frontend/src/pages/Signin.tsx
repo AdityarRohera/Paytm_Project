@@ -5,6 +5,11 @@ import InputBox from "../components/InputBox";
 import Button from "../components/Button";
 import { NavLink } from "react-router-dom";
 import UserWarning from "../components/UserWarning";
+import axios from "axios";
+
+// base url 
+const base_url = import.meta.env.VITE_BASE_URL;
+console.log(base_url);
 
 function Signin() {
 
@@ -22,9 +27,30 @@ function Signin() {
         })
     }
   
-    const submitHandler = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-    }
+   const submitHandler = async(event: React.FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      // api call for create user
+      try{
+
+        const {email , password} = userlogin;
+        const res = await axios.post(`${base_url}/user/signin` , {
+          email,
+          password
+        } , {headers : { 'Content-Type': 'application/json'}});
+
+        if(res){
+          console.log(res.data);
+          localStorage.setItem( "token" , res.data.token);
+        }
+
+      } catch(err: unknown){
+          if(typeof(err) === 'string'){
+            console.log(err)
+          } else if(err instanceof Error){
+            console.log(err.message);
+          }
+      }
+  }
 
 
   return (

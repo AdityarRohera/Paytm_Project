@@ -5,6 +5,13 @@ import InputBox from "../components/InputBox"
 import Button from "../components/Button";
 import UserWarning from "../components/UserWarning";
 import { NavLink } from "react-router-dom";
+import axios from "axios";
+
+// dot env config
+// import dotenv from 'dotenv'
+// dotenv.config();
+const base_url = import.meta.env.VITE_BASE_URL;
+console.log(base_url);
 
 function Signup() {
 
@@ -22,8 +29,30 @@ function Signup() {
       })
   }
 
-  const submitHandler = (event: React.FormEvent<HTMLFormElement>) => {
+  const submitHandler = async(event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
+      // api call for create user
+      try{
+
+        const {firstName , lastName , email , password} = userData;
+        const res = await axios.post(`${base_url}/user/signup` , {
+          firstName,
+          lastName,
+          email,
+          password
+        } , {headers : { 'Content-Type': 'application/json'}});
+
+        if(res){
+          console.log(res);
+        }
+
+      } catch(err: unknown){
+          if(typeof(err) === 'string'){
+            console.log(err)
+          } else if(err instanceof Error){
+            console.log(err.message);
+          }
+      }
   }
 
   return (

@@ -1,6 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 dotenv.config();
+import cors from 'cors'
 
 const app = express();
 const port: number =  Number(process.env.PORT) || 3000;
@@ -11,6 +12,12 @@ import dbConnect from './dbConnect';
 dbConnect();
 
 app.use(express.json());
+app.use(cors(
+  {
+    origin : ' http://localhost:5173',
+    optionsSuccessStatus: 200
+  }
+));
 
 // Routes
 import userRouter from './routes/userRoute';

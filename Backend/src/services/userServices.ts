@@ -44,3 +44,8 @@ export const createBalance = async(userId : Types.ObjectId) => {
     const createBal = await accountModel.create({userId , balance});
     return createBal;
 }
+
+export const getAllUsers = async() => {
+    const allUsers = await userModel.find({});
+    return allUsers;
+}
