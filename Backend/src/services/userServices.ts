@@ -49,3 +49,9 @@ export const getAllUsers = async() => {
     const allUsers = await userModel.find({});
     return allUsers;
 }
+
+export const findUserbyId = async(userId : Types.ObjectId) => {
+    // login user logic
+     const findUser = await userModel.findById(userId);
+     return findUser;
+}

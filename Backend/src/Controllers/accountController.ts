@@ -34,7 +34,9 @@ export const transferBalance = async(req : Request , res: Response) => {
         const userReq = req as AuthenticatedRequest;
         const userId = new Types.ObjectId(userReq.userId);
         const {receiveId , amount} = req.body;
+        console.log(receiveId , typeof(receiveId));
         const recieveUserId = new Types.ObjectId(receiveId);
+        console.log(recieveUserId);
 
         // first check for user balance
         const transferUser = await userAccount(userId);
